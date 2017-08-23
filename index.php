@@ -152,8 +152,6 @@ $days_until_deadline = $date_deadline - $current_date;
 
                         <td class="task__date">
                             <?php print($date_deadline); ?>
-                            
-                                
                         </td>
 
                         <td class="task__controls">
