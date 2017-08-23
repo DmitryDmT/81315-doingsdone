@@ -121,11 +121,7 @@ $days_until_deadline = null;
                     </div>
 
                     <label class="checkbox">
-                        <?php if ($show_complete_tasks == 1): ?>
-                            <input id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox" checked>
-                        <?php else: ?>    
-                            <input id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox">
-                        <?php endif; ?>
+                        <input id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox" <?php if ($show_complete_tasks == 1) echo "checked"; ?>>
                         <span class="checkbox__text">Показывать выполненные</span>
                     </label>
                 </div>
