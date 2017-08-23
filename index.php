@@ -16,6 +16,7 @@ $date_deadline = date("d.m.Y", $task_deadline_ts);
 // в эту переменную запишите кол-во дней до даты задачи
 $days_until_deadline = $date_deadline - $current_date;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
