@@ -20,40 +20,40 @@ $days_until_deadline = $date_deadline - $current_date;
 $arr_projects = ["Все", "Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
 $arr_tasks = [
   0 => [
-    'Задача' => 'Собеседование в IT компании',
-    'Дата выполнения' => '01.06.2018',
-    'Категория' => 'Работа',
-    'Выполнен' => 'Нет'
+    'task' => 'Собеседование в IT компании',
+    'deadline' => '01.06.2018',
+    'category' => 'Работа',
+    'done' => 'Нет'
   ],
   1 => [
-    'Задача' => 'Выполнить тестовое задание',
-    'Дата выполнения' => '25.05.2018',
-    'Категория' => 'Работа',
-    'Выполнен' => 'Нет'
+    'task' => 'Выполнить тестовое задание',
+    'deadline' => '25.05.2018',
+    'category' => 'Работа',
+    'done' => 'Нет'
   ],
   2 => [
-    'Задача' => 'Сделать задание первого раздела',
-    'Дата выполнения' => '21.04.2018',
-    'Категория' => 'Учеба',
-    'Выполнен' => 'Да'
+    'task' => 'Сделать задание первого раздела',
+    'deadline' => '21.04.2018',
+    'category' => 'Учеба',
+    'done' => 'Да'
   ],
   3 => [
-    'Задача' => 'Встреча с другом',
-    'Дата выполнения' => '22.04.2018',
-    'Категория' => 'Входящие',
-    'Выполнен' => 'Нет'
+    'task' => 'Встреча с другом',
+    'deadline' => '22.04.2018',
+    'category' => 'Входящие',
+    'done' => 'Нет'
   ],
   4 => [
-    'Задача' => 'Купить корм для кота',
-    'Дата выполнения' => '01.06.2018',
-    'Категория' => 'Домашние дела',
-    'Выполнен' => 'Нет'
+    'task' => 'Купить корм для кота',
+    'deadline' => '01.06.2018',
+    'category' => 'Домашние дела',
+    'done' => 'Нет'
   ],
   5 => [
-    'Задача' => 'Заказать пиццу',
-    'Дата выполнения' => '01.06.2018',
-    'Категория' => 'Домашние дела',
-    'Выполнен' => 'Нет'
+    'task' => 'Заказать пиццу',
+    'deadline' => '01.06.2018',
+    'category' => 'Домашние дела',
+    'done' => 'Нет'
   ]
 ];
 ?>
@@ -167,20 +167,20 @@ $arr_tasks = [
                             </td>
                         </tr>
                     <?php foreach ($arr_tasks as $key => $value): ?>
-                        <tr class="tasks__item task <?php if ($value['Выполнен'] == 'Да') echo "task--completed"; ?>">
+                        <tr class="tasks__item task <?php if ($value['done'] == 'Да') echo "task--completed"; ?>">
                             <td class="task__select">
                                 <label class="checkbox task__checkbox">
-                                    <input class="checkbox__input visually-hidden" type="checkbox" <?php if ($value['Выполнен'] == 'Да') echo "checked"; ?>>
-                                    <span class="checkbox__text"><?=$value['Задача']; ?></span>
+                                    <input class="checkbox__input visually-hidden" type="checkbox" <?php if ($value['done'] == 'Да') echo "checked"; ?>>
+                                    <span class="checkbox__text"><?=$value['task']; ?></span>
                                 </label>
                             </td>
 
                             <td class="task__date">
-                                <?=$value['Дата выполнения']; ?>
+                                <?=$value['deadline']; ?>
                             </td>
 
                             <td class="task__controls">
-                                <button class="expand-control" type="button" name="button"><?=$value['Задача']; ?></button>
+                                <button class="expand-control" type="button" name="button"><?=$value['task']; ?></button>
 
                                 <ul class="expand-list hidden">
                                     <li class="expand-list__item">
