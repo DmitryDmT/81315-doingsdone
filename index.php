@@ -56,6 +56,25 @@ $arr_tasks = [
     'done' => 'Нет'
   ]
 ];
+
+// функции
+function count_tasks($list_tasks, $name_project) {
+  $count = 0;
+  
+  foreach ($list_tasks as $key => $value):
+    if ($value['category'] == $name_project) {
+      $count = $count + 1;
+    }
+  endforeach;
+  
+  if ($name_project == 'Все') {
+    return count($list_tasks);
+  }
+  
+  return $count;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -101,14 +120,12 @@ $arr_tasks = [
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                        <?php $index = 0; ?>
-                            <?php while ($index < count($arr_projects)) { ?>
-                              <li class="main-navigation__list-item <?php if ($index == 0) echo "main-navigation__list-item--active"; ?>">
-                                  <a class="main-navigation__list-item-link" href="#"><?=$arr_projects[$index]; ?></a>
-                                  <span class="main-navigation__list-item-count">24</span>
-                              </li>
-                              <?php $index = $index + 1;
-                            } ?>
+                        <?php foreach ($arr_projects as $key => $value): ?>
+                            <li class="main-navigation__list-item <? if ($key == 0) echo "main-navigation__list-item--active"; ?>">
+                                <a class="main-navigation__list-item-link" href="#"><?= $value; ?></a>
+                                <span class="main-navigation__list-item-count"><?= count_tasks($arr_tasks, $value); ?></span>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
                 </nav>
 
@@ -154,18 +171,6 @@ $arr_tasks = [
                 </div>
 
                 <table class="tasks">
-                        <tr class="tasks__item task task--completed">
-                            <td class="task__select">
-                                <label class="checkbox task__checkbox">
-                                    <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                                    <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
-                                </label>
-                            </td>
-                            <td class="task__date">10.04.2017</td>
-
-                            <td class="task__controls">
-                            </td>
-                        </tr>
                     <?php foreach ($arr_tasks as $key => $value): ?>
                         <tr class="tasks__item task <?php if ($value['done'] == 'Да') echo "task--completed"; ?>">
                             <td class="task__select">
@@ -193,7 +198,6 @@ $arr_tasks = [
                                 </ul>
                             </td>
                         </tr>
-
                     <?php endforeach; ?>
                 </table>
             </main>
