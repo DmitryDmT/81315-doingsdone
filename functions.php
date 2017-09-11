@@ -1,5 +1,14 @@
 <?php
 
+function add_task($arr_tasks, $name, $date, $project, $done) {
+  array_unshift($arr_tasks, [
+    'task' => $name,
+    'deadline' => $date,
+    'category' => $project,
+    'done' => $done
+  ]);
+}
+
 function count_tasks($list_tasks, $name_project) {
   $count = 0;
   

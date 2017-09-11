@@ -62,6 +62,81 @@ $arr_tasks = [
 
 require_once "functions.php";
 
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  if (isset($_GET['add'])) {
+    $page_data = [
+      'arr_projects' => $arr_projects,
+      'name' => '',
+      'date' => '',
+      'project' => '',
+      'errors' => [],
+      'overlay' => $overlay
+    ];
+
+    $page_content = renderTemplate('templates/form.php', $page_data);
+  }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['add'])) {
+    $name = $_POST['name'] ?? '';
+    $project = $_POST['project'] ?? '';
+    $date = $_POST['date'] ?? '';
+    $required = ['name', 'project', 'date', 'preview'];
+    $errors_form = [];
+    
+    foreach ($_POST as $key => $value) {
+      if (in_array($key, $required) && $value == '') {
+        array_push($errors_form, $key);
+        break;
+      }
+      
+      if (isset($_FILES['preview'])) {
+        $file_name_p = $_FILES['preview']['name'];
+        $file_path = __DIR__ . '/';
+        $file_url = __DIR__ . $file_name_p;
+
+        move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name_p);
+        
+        if (isset($_FILES['preview'])) {
+          $finfo = finfo_open(FILEINFO_MIME_TYPE);
+          $file_name = $_FILES['preview']['tmp_name'];
+          $file_size = $_FILES['preview']['size'];
+          $file_type = finfo_file($finfo, $file_name);
+
+          if ($file_type !== 'image/png' || $file_type !== 'image/jpg' || $file_size > 2000000) {
+            print("Загрузите картинку в формате PNG или JPG. Максимальный размер файла: 2Мб");
+          } else {
+            print("<a href='$file_url'>$file_name_p</a>");
+          }
+        }
+      }
+      
+      if (!count($errors_form)) {
+        add_task($arr_tasks, $name, $date, $project, 'Нет');
+        $page_data = [
+          'arr_projects' => $arr_projects,
+          'arr_tasks' => $showed_project_tasks, 
+          'show_complete' => $show_complete_tasks
+        ];
+
+        $page_content = renderTemplate('templates/index.php', $page_data);
+      } else {
+        $overlay = 'overlay';
+        $page_data = [
+          'arr_projects' => $arr_projects,
+          'name' => $name,
+          'date' => $date,
+          'project' => $project,
+          'errors' => $errors_form
+        ];
+
+        $page_content = renderTemplate('templates/form.php', $page_data);
+      }
+    }
+  }
+}
+
 $projects_id = $_GET['id'] ?? 0;
 
 if (!array_key_exists($projects_id, $arr_projects)) {
