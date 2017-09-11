@@ -5,6 +5,7 @@
   $arr_projects = $templateData['arr_projects'];
   $arr_tasks = $templateData['arr_tasks'];
   $user_name = $templateData['user_name'];
+  $projects_id = $templateData['projects_id'];
 
 ?>
 
@@ -53,8 +54,8 @@
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
                         <?php foreach ($arr_projects as $key => $value): ?>
-                            <li class="main-navigation__list-item <? if ($key == 0) echo "main-navigation__list-item--active"; ?>">
-                                <a class="main-navigation__list-item-link" href="#"><?= $value; ?></a>
+                            <li class="main-navigation__list-item <? if ($key == $projects_id) echo "main-navigation__list-item--active"; ?>">
+                                <a class="main-navigation__list-item-link" href="<?= 'index.php' . '?id=' . $key; ?>"><?= $value; ?></a>
                                 <span class="main-navigation__list-item-count"><?= count_tasks($arr_tasks, $value); ?></span>
                             </li>
                         <?php endforeach; ?>

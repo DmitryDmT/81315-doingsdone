@@ -19,7 +19,6 @@ $days_until_deadline = $date_deadline - $current_date;
 
 $user_name = 'Дмитрий';
 
-
 // массивы
 $arr_projects = ["Все", "Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
 $arr_tasks = [
@@ -63,24 +62,33 @@ $arr_tasks = [
 
 require_once "functions.php";
 
-$page_data = [
-  'arr_projects' => $arr_projects,
-  'arr_tasks' => $arr_tasks, 
-  'show_complete' => $show_complete_tasks
-];
+$projects_id = $_GET['id'] ?? 0;
 
-$page_content = renderTemplate('templates/index.php', $page_data);
+if (!array_key_exists($projects_id, $arr_projects)) {
+  http_response_code(404);
+} else {
+  $showed_project_tasks = show_project_tasks($arr_tasks, $arr_projects[$projects_id]);
+  
+  $page_data = [
+    'arr_projects' => $arr_projects,
+    'arr_tasks' => $showed_project_tasks, 
+    'show_complete' => $show_complete_tasks
+  ];
 
-$layout_data = [
-  'title' => 'Дела в порядке!',
-  'content' => $page_content,
-  'arr_projects' => $arr_projects, 
-  'arr_tasks' => $arr_tasks,
-  'user_name' => $user_name
-];
+  $page_content = renderTemplate('templates/index.php', $page_data);
 
-$layout_content = renderTemplate('templates/layout.php', $layout_data);
+  $layout_data = [
+    'title' => 'Дела в порядке!',
+    'content' => $page_content,
+    'arr_projects' => $arr_projects, 
+    'arr_tasks' => $arr_tasks,
+    'user_name' => $user_name,
+    'projects_id' => $projects_id
+  ];
 
-print($layout_content);
+  $layout_content = renderTemplate('templates/layout.php', $layout_data);
+
+  print($layout_content);
+}
 
 ?>

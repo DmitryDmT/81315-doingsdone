@@ -34,4 +34,21 @@ function renderTemplate($templatePath, $templateData) {
     }
 }
 
+function show_project_tasks($list_tasks, $name_project) {
+  $all_tasks = 'Все';
+  $result = [];
+  
+  if ($name_project == $all_tasks) {
+    $result = $list_tasks;
+  } else {
+    foreach ($list_tasks as $key => $value) {
+      if ($value['category'] == $name_project) {
+        array_push($result, $value);
+      }
+    }
+  }
+  
+  return $result;
+}
+
 ?>
