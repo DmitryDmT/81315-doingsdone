@@ -1,7 +1,7 @@
 <?php
 
 $show_complete_tasks = $templateData['show_complete'];
-$arr_tasks = $templateData['arr_tasks'];
+$arr_tasks = $templateData['arr_tasks_sh'];
 
 ?>
                 
