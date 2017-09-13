@@ -23,37 +23,37 @@ $user_name = 'Дмитрий';
 // массивы
 $arr_projects = ["Все", "Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
 $arr_tasks = [
-  [
+  0 => [
     'task' => 'Собеседование в IT компании',
     'deadline' => '01.06.2018',
     'category' => 'Работа',
     'done' => 'Нет'
   ],
-  [
+  1 => [
     'task' => 'Выполнить тестовое задание',
     'deadline' => '25.05.2018',
     'category' => 'Работа',
     'done' => 'Нет'
   ],
-  [
+  2 => [
     'task' => 'Сделать задание первого раздела',
     'deadline' => '21.04.2018',
     'category' => 'Учеба',
     'done' => 'Да'
   ],
-  [
+  3 => [
     'task' => 'Встреча с другом',
     'deadline' => '22.04.2018',
     'category' => 'Входящие',
     'done' => 'Нет'
   ],
-  [
+  4 => [
     'task' => 'Купить корм для кота',
     'deadline' => '01.06.2018',
     'category' => 'Домашние дела',
     'done' => 'Нет'
   ],
-  [
+  5 => [
     'task' => 'Заказать пиццу',
     'deadline' => '01.06.2018',
     'category' => 'Домашние дела',
@@ -61,9 +61,7 @@ $arr_tasks = [
   ]
 ];
 
-$errors = [
-  'errors' => []
-];
+$errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
   if (isset($_POST['addf'])) {
@@ -71,19 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
     
     foreach ($_POST as $key => $value) {
       if (in_array($key, $required) && $value == '') {
-        array_push($errors['errors'], $key);
+        array_push($errors, $key);
       }
     }
     
-    if (!count($errors['errors'])) {
-      $new_task = [
-        'task' => $_POST['name'],
-        'deadline' => $_POST['date'],
-        'category' => $arr_projects[$_POST['project']],
-        'done' => 'Нет'
-      ];
-      array_unshift($arr_tasks, $new_task);
-      
+    if (!count($errors)) {
       if(isset($_FILES['preview'])) {
         $file_name = $_FILES['preview']['name'];
         $file_path = __DIR__ . '/';
@@ -92,6 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
         move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
         print("<a href='$file_url'>$file_name</a>");
       }
+      
+      $new_task = [
+        'task' => $_POST['name'],
+        'deadline' => $_POST['date'],
+        'category' => $_POST['project'],
+        'done' => 'Нет'
+      ];
+      array_unshift($arr_tasks, $new_task);
     }
   }
 }
@@ -112,11 +110,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   ];
   $page_content = renderTemplate('templates/index.php', $page_data);
 
-  if (isset($_GET['add']) || count($errors['errors'])) {
+  if (isset($_GET['add']) || !empty($errors)) {
     $page_data_m = [
       'arr_projects' => $arr_projects,
       'arr_tasks_sh' => $showed_project_tasks, 
-      'errors' => $errors['errors']
+      'errors' => $errors
     ];
 
     $page_content_m = renderTemplate('templates/form.php', $page_data_m);

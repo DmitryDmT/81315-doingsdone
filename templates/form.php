@@ -1,7 +1,7 @@
 <?php
  
  $name = $_POST['name'] ?? '';
- $project = $_POST['project'] ?? '';
+ $project = $_POST['project'] ?? 0;
  $date = $_POST['date'] ?? '';
 
 ?>
@@ -14,7 +14,7 @@
       <div class="form__row">
         <label class="form__label" for="name">Название <sup>*</sup></label>
 
-        <input class="form__input <?php in_array('name', $templateData['errors']) ? 'form__input--error' : ''; ?>" type="text" name="name" id="name" value="<?=$name;?>" placeholder="Введите название">
+        <input class="form__input" type="text" name="name" id="name" value="<?=$name;?>" placeholder="Введите название">
         
       </div>
 
@@ -23,7 +23,7 @@
 
         <select class="form__input form__input--select" name="project" id="project">
           <?php foreach ($templateData['arr_projects'] as $key => $value): ?>
-            <option value="<?=$key;?>"<?= ($key == $projects_id) ? 'selected' : '';?>><?=$value;?></option>
+            <option value="<?=$key;?>"><?=$value;?></option>
           <?php endforeach; ?>
         </select>
       </div>

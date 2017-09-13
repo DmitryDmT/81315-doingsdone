@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="<?php if (isset($_GET['add'])) echo "overlay";?>">
+<body class="<?php if (isset($_GET['add'])) echo $form_content ? 'overlay' : '';?>">
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
@@ -32,7 +32,7 @@
             </a>
 
             <div class="main-header__side">
-                <a class="main-header__side-item button button--plus" href="<?= 'index.php' . '?add=' . 'new'?>">Добавить задачу</a>
+                <a class="main-header__side-item button button--plus" href="<?= 'index.php' . '?add'?>">Добавить задачу</a>
 
                 <div class="main-header__side-item user-menu">
                     <div class="user-menu__image">
@@ -81,7 +81,7 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-        <a class="main-footer__button button button--plus" href="<?= 'index.php' . '?add=' . 'new'?>">Добавить задачу</a>
+        <a class="main-footer__button button button--plus" href="<?= 'index.php' . '?add'?>">Добавить задачу</a>
 
         <div class="main-footer__social social">
             <span class="visually-hidden">Мы в соцсетях:</span>
