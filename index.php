@@ -61,7 +61,9 @@ $arr_tasks = [
   ]
 ];
 
-$errors = [];
+$errors = [
+  'errors' => []
+];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
   if (isset($_POST['addf'])) {
@@ -69,11 +71,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
     
     foreach ($_POST as $key => $value) {
       if (in_array($key, $required) && $value == '') {
-        array_push($errors, $key);
+        array_push($errors['errors'], $key);
       }
     }
     
-    if (!count($errors)) {
+    if (!count($errors['errors'])) {
+      $new_task = [
+        'task' => $_POST['name'],
+        'deadline' => $_POST['date'],
+        'category' => $arr_projects[$_POST['project']],
+        'done' => 'Нет'
+      ];
+      array_unshift($arr_tasks, $new_task);
+      
       if(isset($_FILES['preview'])) {
         $file_name = $_FILES['preview']['name'];
         $file_path = __DIR__ . '/';
@@ -82,14 +92,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
         move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
         print("<a href='$file_url'>$file_name</a>");
       }
-      
-      $new_task = [
-        'task' => $_POST['name'],
-        'deadline' => $_POST['date'],
-        'category' => $_POST['project'],
-        'done' => 'Нет'
-      ];
-      array_unshift($arr_tasks, $new_task);
     }
   }
 }
@@ -110,11 +112,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   ];
   $page_content = renderTemplate('templates/index.php', $page_data);
 
-  if (isset($_GET['add']) || !empty($errors)) {
+  if (isset($_GET['add']) || count($errors['errors'])) {
     $page_data_m = [
       'arr_projects' => $arr_projects,
       'arr_tasks_sh' => $showed_project_tasks, 
-      'errors' => $errors
+      'errors' => $errors['errors']
     ];
 
     $page_content_m = renderTemplate('templates/form.php', $page_data_m);
