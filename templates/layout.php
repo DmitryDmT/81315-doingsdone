@@ -1,12 +1,12 @@
 <?php
 
-  $title = $templateData['title'];
-  $content = $templateData['content'];
-  $form_content = $templateData['form'];
-  $arr_projects = $templateData['arr_projects'];
-  $arr_tasks = $templateData['arr_tasks'];
-  $user_name = $templateData['user_name'];
-  $projects_id = $templateData['projects_id'];
+$title = $templateData['title'];
+$content = $templateData['content'];
+$page_content_m = $templateData['form'];
+$arr_projects = $templateData['arr_projects'];
+$arr_tasks = $templateData['arr_tasks'];
+$user_name = $templateData['user_name'];
+$projects_id = $templateData['projects_id'];
   
 ?>
 
@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="<?php if (isset($_GET['add'])) echo $form_content ? 'overlay' : '';?>">
+<body class="<?php if (!empty($page_content_m)) echo 'overlay';?>">
 <h1 class="visually-hidden">Дела в порядке</h1>
 
 <div class="page-wrapper">
@@ -112,7 +112,7 @@
     </div>
 </footer>
 
-<?=$form_content;?>
+<?=$page_content_m;?>
 
 <script type="text/javascript" src="js/script.js"></script>
 </body>
