@@ -1,4 +1,5 @@
 <?php
+require_once "functions.php";
 // показывать или нет выполненные задачи
 $show_complete_tasks = rand(0, 1);
 
@@ -60,110 +61,83 @@ $arr_tasks = [
   ]
 ];
 
-require_once "functions.php";
+$errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-  if (isset($_GET['add'])) {
-    $page_data = [
-      'arr_projects' => $arr_projects,
-      'name' => '',
-      'date' => '',
-      'project' => '',
-      'errors' => [],
-      'overlay' => $overlay
-    ];
-
-    $page_content = renderTemplate('templates/form.php', $page_data);
-  }
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (isset($_POST['add'])) {
-    $name = $_POST['name'] ?? '';
-    $project = $_POST['project'] ?? '';
-    $date = $_POST['date'] ?? '';
-    $required = ['name', 'project', 'date', 'preview'];
-    $errors_form = [];
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
+    if (isset($_POST['addf'])) {
+        $required = ['name', 'date', 'project'];
     
-    foreach ($_POST as $key => $value) {
-      if (in_array($key, $required) && $value == '') {
-        array_push($errors_form, $key);
-        break;
-      }
-      
-      if (isset($_FILES['preview'])) {
-        $file_name_p = $_FILES['preview']['name'];
-        $file_path = __DIR__ . '/';
-        $file_url = __DIR__ . $file_name_p;
-
-        move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name_p);
-        
-        if (isset($_FILES['preview'])) {
-          $finfo = finfo_open(FILEINFO_MIME_TYPE);
-          $file_name = $_FILES['preview']['tmp_name'];
-          $file_size = $_FILES['preview']['size'];
-          $file_type = finfo_file($finfo, $file_name);
-
-          if ($file_type !== 'image/png' || $file_type !== 'image/jpg' || $file_size > 2000000) {
-            print("Загрузите картинку в формате PNG или JPG. Максимальный размер файла: 2Мб");
-          } else {
-            print("<a href='$file_url'>$file_name_p</a>");
-          }
+        foreach ($_POST as $key => $value) {
+            if (in_array($key, $required) && $value == '') {
+                array_push($errors, $key);
+            } else {
+                if ($key == 'date') {
+                    if ($value !== date('d.m.Y', strtotime($value))) {
+                        array_push($errors, $key);
+                    }
+                }
+            }
         }
-      }
-      
-      if (!count($errors_form)) {
-        add_task($arr_tasks, $name, $date, $project, 'Нет');
-        $page_data = [
-          'arr_projects' => $arr_projects,
-          'arr_tasks' => $showed_project_tasks, 
-          'show_complete' => $show_complete_tasks
-        ];
+    
+        if (empty($errors)) {
+            $new_task = [
+                'task' => $_POST['name'],
+                'deadline' => $_POST['date'],
+                'category' => $arr_projects[$_POST['project']],
+                'done' => 'Нет'
+            ];
+            array_unshift($arr_tasks, $new_task);
 
-        $page_content = renderTemplate('templates/index.php', $page_data);
-      } else {
-        $overlay = 'overlay';
-        $page_data = [
-          'arr_projects' => $arr_projects,
-          'name' => $name,
-          'date' => $date,
-          'project' => $project,
-          'errors' => $errors_form
-        ];
+            if(isset($_FILES['preview'])) {
+                $file_name = $_FILES['preview']['name'];
+                $file_path = __DIR__ . '/';
+                $file_url = '/' . $file_name;
 
-        $page_content = renderTemplate('templates/form.php', $page_data);
-      }
+                move_uploaded_file($_FILES['preview']['tmp_name'], $file_path . $file_name);
+                print("<a href='$file_url'>$file_name</a>");
+            }
+        }
     }
-  }
 }
 
 $projects_id = $_GET['id'] ?? 0;
 
 if (!array_key_exists($projects_id, $arr_projects)) {
-  http_response_code(404);
+    http_response_code(404);
 } else {
-  $showed_project_tasks = show_project_tasks($arr_tasks, $arr_projects[$projects_id]);
-  
-  $page_data = [
+    $showed_project_tasks = show_project_tasks($arr_tasks, $arr_projects[$projects_id]);
+}
+
+$page_data = [
     'arr_projects' => $arr_projects,
-    'arr_tasks' => $showed_project_tasks, 
+    'arr_tasks_sh' => $showed_project_tasks, 
     'show_complete' => $show_complete_tasks
-  ];
+];
+$page_content = renderTemplate('templates/index.php', $page_data);
 
-  $page_content = renderTemplate('templates/index.php', $page_data);
+if (isset($_GET['add']) || !empty($errors)) {
+    $page_data_m = [
+        'arr_projects' => $arr_projects,
+        'arr_tasks_sh' => $showed_project_tasks, 
+        'errors' => $errors
+    ];
 
-  $layout_data = [
+    $page_content_m = renderTemplate('templates/form.php', $page_data_m);
+}
+
+
+$layout_data = [
     'title' => 'Дела в порядке!',
     'content' => $page_content,
+    'form' => $page_content_m,
     'arr_projects' => $arr_projects, 
     'arr_tasks' => $arr_tasks,
     'user_name' => $user_name,
     'projects_id' => $projects_id
-  ];
+];
 
-  $layout_content = renderTemplate('templates/layout.php', $layout_data);
+$layout_content = renderTemplate('templates/layout.php', $layout_data);
 
-  print($layout_content);
-}
+print($layout_content);
 
 ?>
