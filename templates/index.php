@@ -4,7 +4,6 @@ $show_complete_tasks = $templateData['show_complete'];
 $arr_tasks = $templateData['arr_tasks_sh'];
 
 ?>
-                
 
 <h2 class="content__main-heading">Список задач</h2>
 
