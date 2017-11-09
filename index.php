@@ -20,7 +20,42 @@ $days_until_deadline = $date_deadline - $current_date;
 $projects = ['Все', 'Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
 
 $projects_data = [
-  0
+  0 => [
+    'task' => 'Собеседование в IT компании',
+    'date_deadline' => '01.06.2018',
+    'projects' => 'Работа',
+    'done' => 'Нет'
+  ],
+  1 => [
+    'task' => 'Выполнить тестовое задание',
+    'date_deadline' => '25.05.2018',
+    'projects' => 'Работа',
+    'done' => 'Нет'
+  ],
+  2 => [
+    'task' => 'Сделать задание первого раздела',
+    'date_deadline' => '21.04.2018',
+    'projects' => 'Учеба',
+    'done' => 'Да'
+  ],
+  3 => [
+    'task' => 'Встреча с другом',
+    'date_deadline' => '22.04.2018',
+    'projects' => 'Входящие',
+    'done' => 'Нет'
+  ],
+  4 => [
+    'task' => 'Купить корм для кота',
+    'date_deadline' => '',
+    'projects' => 'Домашние дела',
+    'done' => 'Нет'
+  ],
+  5 => [
+    'task' => 'Заказать пиццу',
+    'date_deadline' => '',
+    'projects' => 'Домашние дела',
+    'done' => 'Нет'
+  ],
 ];
 
 ?>
@@ -66,32 +101,14 @@ $projects_data = [
                 <h2 class="content__side-heading">Проекты</h2>
 
                 <nav class="main-navigation">
+                    <?php foreach($projects as $value): ?>
                     <ul class="main-navigation__list">
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Входящие</a>
+                        <li class="main-navigation__list-item <?php if ($value == 'Все') echo 'main-navigation__list-item--active';?>">
+                            <a class="main-navigation__list-item-link" href="#"><?=$value;?></a>
                             <span class="main-navigation__list-item-count">24</span>
                         </li>
-
-                        <li class="main-navigation__list-item main-navigation__list-item--active">
-                            <a class="main-navigation__list-item-link" href="#">Учеба</a>
-                            <span class="main-navigation__list-item-count">12</span>
-                        </li>
-
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Здоровье</a>
-                            <span class="main-navigation__list-item-count">3</span>
-                        </li>
-
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Домашние дела</a>
-                            <span class="main-navigation__list-item-count">7</span>
-                        </li>
-
-                        <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#">Авто</a>
-                            <span class="main-navigation__list-item-count">0</span>
-                        </li>
                     </ul>
+                    <?php endforeach;?>
                 </nav>
 
                 <a class="button button--transparent button--plus content__side-button" href="#">Добавить проект</a>
@@ -139,34 +156,22 @@ $projects_data = [
                 <table class="tasks">
 
                     <!--показывать следующий тег <tr/>, если переменная равна единице-->
-                    <?php if ($show_complete_tasks == 1): ?>
-                    <tr class="tasks__item task task--completed">
-                        <td class="task__select">
-                            <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                                <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
-                            </label>
-                        </td>
-                        <td class="task__date">10.04.2017</td>
-
-                        <td class="task__controls">
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-                    <tr class="tasks__item task <?php if ($days_until_deadline <= 0) echo 'task--important'; ?>">
+                    <?php foreach($projects_data as $key => $value): ?>
+                    <?php
+                    $proj_date_deadline_ts = strtotime($projects_data[$key]['date_deadline']);
+                    $proj_days_until_deadline = ($proj_date_deadline_ts - $current_ts) / 86400;
+                    ?>
+                    <tr class="tasks__item task <?php if ($projects_data[$key]['done'] == 'Да') echo 'task--completed';?> <?php if ($proj_days_until_deadline <= 0) echo 'task--important';?>">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
                                 <input class="checkbox__input visually-hidden" type="checkbox">
-                                <span class="checkbox__text">Выполнить первое задание</span>
+                                <span class="checkbox__text"><?=$projects_data[$key]['task'];?></span>
                             </label>
                         </td>
-
-                        <td class="task__date">
-                            <?=$date_deadline;?>
-                        </td>
+                        <td class="task__date"><?=$projects_data[$key]['date_deadline'];?></td>
 
                         <td class="task__controls">
-                            <button class="expand-control" type="button" name="button">Выполнить первое задание</button>
+                          <button class="expand-control" type="button" name="button"><?=$projects_data[$key]['task'];?></button>
 
                             <ul class="expand-list hidden">
                                 <li class="expand-list__item">
@@ -179,8 +184,7 @@ $projects_data = [
                             </ul>
                         </td>
                     </tr>
-
-
+                    <?php endforeach;?>
                 </table>
             </main>
         </div>
