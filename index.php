@@ -122,7 +122,7 @@ function count_projects($list_tasks, $name_project) {
                     <ul class="main-navigation__list">
                         <li class="main-navigation__list-item <?php if ($key == 0) echo 'main-navigation__list-item--active';?>">
                             <a class="main-navigation__list-item-link" href="#"><?=$value;?></a>
-                            <span class="main-navigation__list-item-count"><?php count_projects($projects_data, $value);?></span>
+                            <span class="main-navigation__list-item-count"><?=count_projects($projects_data, $value);?></span>
                         </li>
                     </ul>
                     <?php endforeach;?>
