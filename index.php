@@ -58,6 +58,13 @@ $projects_data = [
   ],
 ];
 
+// Функции
+function countProjects($list_tasks, $projects) {
+  for ($i = 0; $i < count($projects); $i++) {
+    
+  }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
