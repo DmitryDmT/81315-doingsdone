@@ -8,6 +8,7 @@ $date_default_timezone_set('Europe/Moscow');
 $days = rand(-3, 3);
 $task_deadline_ts = strtotime("+" . $days . " day midnight"); // метка времени даты выполнения задачи
 $current_ts = strtotime('now midnight'); // текущая метка времени
+$current_date = date('d.m.Y', $current_ts);
 
 // запишите сюда дату выполнения задачи в формате дд.мм.гггг
 $date_deadline = ;
