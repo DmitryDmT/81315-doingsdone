@@ -59,10 +59,14 @@ $projects_data = [
 ];
 
 // Функции
-function countProjects($list_tasks, $projects) {
-  for ($i = 0; $i < count($projects); $i++) {
-    
-  }
+function countProjects($list_tasks, $name_project) {
+  $count = 0;
+  
+  foreach($list_tasks as $key => $value):
+    $count = count($list_tasks[$key]);
+  endforeach;
+  
+  return $count;
 }
 
 ?>
