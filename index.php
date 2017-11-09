@@ -63,13 +63,13 @@ function countProjects($list_tasks, $name_project) {
   $count = 0;
   
   foreach($list_tasks as $key => $value):
-    if ($value['projects'] == $name_project) {
+    if ($list_tasks[$key]['projects'] == $name_project) {
       $count = $count + 1;
     }
   endforeach;
   
   if ($name_project == 'Все') {
-    
+    return count($list_tasks);
   }
   
   return $count;
@@ -122,7 +122,7 @@ function countProjects($list_tasks, $name_project) {
                     <ul class="main-navigation__list">
                         <li class="main-navigation__list-item <?php if ($value == 'Все') echo 'main-navigation__list-item--active';?>">
                             <a class="main-navigation__list-item-link" href="#"><?=$value;?></a>
-                            <span class="main-navigation__list-item-count">24</span>
+                            <span class="main-navigation__list-item-count"><?php countProjects($projects_data, $value);?></span>
                         </li>
                     </ul>
                     <?php endforeach;?>
