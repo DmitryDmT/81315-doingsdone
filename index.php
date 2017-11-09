@@ -3,17 +3,17 @@
 $show_complete_tasks = rand(0, 1);
 
 // устанавливаем часовой пояс в Московское время
-date_default_timezone_set('Europe/Moscow');
+$date_default_timezone_set('Europe/Moscow');
 
 $days = rand(-3, 3);
 $task_deadline_ts = strtotime("+" . $days . " day midnight"); // метка времени даты выполнения задачи
 $current_ts = strtotime('now midnight'); // текущая метка времени
 
 // запишите сюда дату выполнения задачи в формате дд.мм.гггг
-$date_deadline = null;
+$date_deadline = ;
 
 // в эту переменную запишите кол-во дней до даты задачи
-$days_until_deadline = null;
+$days_until_deadline = $date_deadline - ;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,14 +123,14 @@ $days_until_deadline = null;
                     <label class="checkbox">
                         <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
                         <input id="show-complete-tasks" class="checkbox__input visually-hidden" type="checkbox" <?php if ($show_complete_tasks == 1) echo 'checked';?>>
-                        <span class="checkbox__text">Показывать выполненные</span>
+                        <span class="checkbox__text">Показывать выполненные</span>  
                     </label>
                 </div>
 
                 <table class="tasks">
 
                     <!--показывать следующий тег <tr/>, если переменная равна единице-->
-                    <?php if ($show_complete_tasks == 1) print('
+                    <?php if ($show_complete_tasks == 1): ?>
                     <tr class="tasks__item task task--completed">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
@@ -142,8 +142,8 @@ $days_until_deadline = null;
 
                         <td class="task__controls">
                         </td>
-                    </tr>'); 
-                    ?>
+                    </tr>
+                    <?php endif; ?>
                     <tr class="tasks__item task">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
