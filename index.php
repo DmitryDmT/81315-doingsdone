@@ -63,8 +63,14 @@ function countProjects($list_tasks, $name_project) {
   $count = 0;
   
   foreach($list_tasks as $key => $value):
-    $count = count($list_tasks[$key]);
+    if ($value['projects'] == $name_project) {
+      $count = $count + 1;
+    }
   endforeach;
+  
+  if ($name_project == 'Все') {
+    
+  }
   
   return $count;
 }
